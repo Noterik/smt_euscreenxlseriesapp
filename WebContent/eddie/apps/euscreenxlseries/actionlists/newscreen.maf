@@ -1,0 +1,12 @@
+loadStyleSheet(screen,euscreenxlelements/generic)
+loadStylesheet(screen,elements)
+loadStylesheet(screen,specific)
+setRole(screen,"seriespage")
+loadContent(screen,template)
+loadContent(screen,header)
+loadContent(screen,footer)
+loadContent(screen,mobilenav)
+callServer(init,screen)
+
+.when device=desktop
+callServer(doDesktopSpecificStuff,screen)

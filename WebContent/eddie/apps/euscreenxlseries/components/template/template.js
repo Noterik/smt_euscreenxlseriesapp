@@ -1,0 +1,12 @@
+var Template = function () {
+	console.log("Template()");
+    Page.apply(this, arguments);
+    
+    this.element = jQuery('#template');
+};
+
+Template.prototype = Object.create(Page.prototype);
+Template.prototype.createTooltips = function(){
+	console.log("createTooltips()");
+	this.element.find('button[data-toggle]').tooltip();
+}

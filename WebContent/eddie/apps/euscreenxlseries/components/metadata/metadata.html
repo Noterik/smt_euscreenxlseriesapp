@@ -1,0 +1,102 @@
+<script type="text/template" id="metadata-template">
+	<!--  series metadata -->
+	<div class="row series-metadata">
+		
+		<!-- series title -->
+	    <div class="col-md-12"><h1><%= metadata.seriesEnglish %></h1></div>
+	    
+	    <!-- series metadata -->
+		<div class="item col-md-12 col-sm-6">
+			<span class="header">ORIGINAL TITLE</span>
+			<span><%= metadata.series %></span>
+		</div>
+		<div class="item col-md-12 col-sm-6">
+			<span class="header">PROVIDER</span>
+			<span><%= metadata.provider %></span>
+		</div>
+		<div class="item col-md-12 col-sm-6">
+			<span class="header">PRODUCTION YEAR</span>
+			<span><%= metadata.year %></span>
+		</div>
+		<div class="item col-md-12 col-sm-6">
+			<span class="header">LANGUAGE</span>
+			<span><%= metadata.language %></span>
+		</div>
+		<div class="item col-md-12 col-sm-6">
+			<span class="header">SUMMARY</span>
+			<span>
+				<p>
+					<%= metadata.summaryEnglish %>
+				</p>	    						
+			</span>
+		</div>
+	</div>
+	
+	<!-- extra information-->
+	<div id="extra-metadata" class="row collapse extra-info">
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">PUBLISHER / BROADCASTER</span>
+	        <span><%= metadata.publisher %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">FIRST BROADCAST CHANNEL</span>
+	        <span><%= metadata.broadcastChannel %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">BROADCAST DATE</span>
+	        <span><%= metdata.broadcastDate %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">LAST BROADCAST DATE</span>
+	        <span>-</span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">LAST PRODUCTION YEAR</span>
+	        <span>-</span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">ORIGINAL LANGUAGE</span>
+	        <span><%= metadata.language %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">CONTRIBUTORS</span>
+	        <span><%= metadata.contributors %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">EXTENDED DESCRIPTION</span>
+	        <span><%= metadata.extendedDescription %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">FURTHER INFORMATION</span>
+	        <span><%= metadata.furtherInformation %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">KEYWORDS</span>
+	        <span><%= metadata.keywords %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">LANDING PAGE URL</span>
+	        <span>Europe</span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">MATERIAL TYPE</span>
+	        <span><%= metadata.materialType %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">RECORD TYPE</span>
+	        <span><%= metadata.itemType %></span>
+	    </div>
+	    <div class="item col-md-12 col-sm-6">
+	        <span class="header">IDENTIFIER</span>
+	        <span>Europe</span>
+	    </div>
+	</div>
+	
+	<!-- results -->
+	<div class="row more">
+		 <div class="col-md-12 more-button">
+	        <a data-toggle="collapse" id="show-extra-metadata" data-target="#extra-metadata">SHOW MORE</a>
+	        <a data-toggle="collapse" id="hide-extra-metadata" data-target="#extra-metadata">SHOW LESS</a>
+	    </div>
+	</div>
+</div>
