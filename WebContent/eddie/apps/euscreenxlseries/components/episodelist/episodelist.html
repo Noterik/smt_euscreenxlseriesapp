@@ -1,0 +1,30 @@
+<script type="text/template" id="chunk-template">
+	<% for(var i = 0; i < items.length; i++){ 
+		var item = items[i];
+	%>
+	<li >
+    	<div class="media-item" data-id="<%= item.id %>">
+            <div class="media-image">
+                <div class="media-wrapper">
+                    <a class="modal-button" data-toggle="modal" data-target="#player-modal" data-backdrop="static">
+                    	<span class="media-playing">NOW PLAYING</span>
+                        <img src="<% if(item.screenshot){print(item.screenshot)}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" class="media-object img-responsive" onError="this.onerror=null;this.src='http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif';"/>
+                        <span class="media-hue"><i class="glyphicon glyphicon-play"></i></span>
+                        <span class="media-title">
+                            <h3><%= item.title %></h3>
+                        </span>
+                    </a>
+                </div>
+            </div>
+        </div>
+	</li>
+	<% } %>
+</script>
+
+<ul class="episode-list">
+</ul>
+<div class="row more hidden-xs hidden-sm">
+	<div class="col-md-12 more-button">
+	    <a href="#">SHOW MORE</a>
+	</div>
+</div>

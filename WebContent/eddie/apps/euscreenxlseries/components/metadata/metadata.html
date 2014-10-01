@@ -44,15 +44,15 @@
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">BROADCAST DATE</span>
-	        <span><%= metdata.broadcastDate %></span>
+	        <span><%= metadata.broadcastDate %></span>
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">LAST BROADCAST DATE</span>
-	        <span>-</span>
+	        <span><%= metadata.lastBroadcastDate %></span>
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">LAST PRODUCTION YEAR</span>
-	        <span>-</span>
+	        <span><%= metadata.lastProductionYear %></span>
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">ORIGINAL LANGUAGE</span>
@@ -76,7 +76,7 @@
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">LANDING PAGE URL</span>
-	        <span>Europe</span>
+	        <span><%= metadata.landingPageURL %></span>
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">MATERIAL TYPE</span>
@@ -88,7 +88,7 @@
 	    </div>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">IDENTIFIER</span>
-	        <span>Europe</span>
+	        <span><%= metadata.id %></span>
 	    </div>
 	</div>
 	
@@ -99,4 +99,4 @@
 	        <a data-toggle="collapse" id="hide-extra-metadata" data-target="#extra-metadata">SHOW LESS</a>
 	    </div>
 	</div>
-</div>
+</script>

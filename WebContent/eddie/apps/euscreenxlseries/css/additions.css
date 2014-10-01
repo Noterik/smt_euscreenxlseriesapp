@@ -1,0 +1,6 @@
+@media(min-width: 992px){
+	.media-item img{
+		width: 256px;
+		height: 193px;
+	}
+}
