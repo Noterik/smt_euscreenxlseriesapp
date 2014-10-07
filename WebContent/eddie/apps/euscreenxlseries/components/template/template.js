@@ -8,7 +8,7 @@ var Template = function () {
 Template.prototype = Object.create(Page.prototype);
 Template.prototype.createTooltips = function(){
 	console.log("createTooltips()");
-	this.element.find('button[data-toggle]').tooltip();
+	this.element.find('[data-toggle]').tooltip();
 	
 	jQuery('button[data-overlay]').popupOverlayJS({
 		$overlayContents : jQuery('.overlaycontent'),

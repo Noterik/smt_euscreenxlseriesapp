@@ -14,6 +14,8 @@ loadContent(screen,episodelist)
 loadContent(screen,itempagelink)
 loadContent(screen,episodetitle)
 loadContent(screen,social)
+loadContent(screen,videocopyright)
+loadContent(screen,ads)
 callServer(init,screen)
 
 .when device=desktop

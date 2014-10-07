@@ -58,6 +58,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
 		this.addReferid("history", "/euscreenxlelements/history");
 		this.addReferid("viewer", "/euscreenxlelements/viewer");
+		this.addReferid("ads", "/euscreenxlelements/ads");
 		
 		this.addReferidCSS("elements", "/euscreenxlelements/generic");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
