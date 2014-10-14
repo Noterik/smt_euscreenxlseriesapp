@@ -34,6 +34,16 @@
 	
 	<!-- extra information-->
 	<div id="extra-metadata" class="row collapse extra-info">
+		<% if (metadata.language.toLowerCase() != "english"){ %>
+		<div class="item col-md-12 col-sm-6">
+			<span class="header">SUMMARY IN ORIGINAL LANGUAGE</span>
+			<span>
+				<p>
+					<%= metadata.summaryOriginal %>
+				</p>	    						
+			</span>
+		</div>
+		<% } %>
 	    <div class="item col-md-12 col-sm-6">
 	        <span class="header">PUBLISHER / BROADCASTER</span>
 	        <span><%= metadata.publisher %></span>

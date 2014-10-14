@@ -220,6 +220,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		fields.add("year");
 		fields.add("language");
 		fields.add("summaryEnglish");
+		fields.add("summaryOriginal");
 		fields.add("publisher");
 		fields.add("broadcastChannel");
 		fields.add("broadcastDate");
