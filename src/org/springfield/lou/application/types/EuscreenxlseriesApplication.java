@@ -110,6 +110,22 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		
 	}
 	
+	public void setDeviceMobile(Screen s){
+		JSONObject params = new JSONObject();
+		params.put("device", "mobile");
+		s.putMsg("viewer", "", "setDevice(" + params + ")");
+		s.putMsg("template", "", "setDevice(" + params + ")");
+		s.putMsg("social", "", "setDevice(" + params + ")");
+	}
+	
+	public void setDeviceIpad(Screen s){
+		JSONObject params = new JSONObject();
+		params.put("device", "ipad");
+		s.putMsg("viewer", "", "setDevice(" + params + ")");
+		s.putMsg("template", "", "setDevice(" + params + ")");
+		s.putMsg("social", "", "setDevice(" + params + ")");
+	}
+	
 	public void doDesktopSpecificStuff(Screen s){
 		System.out.println("doDesktopSpecificStuff()");
 		s.putMsg("template", "", "createTooltips()");
@@ -235,7 +251,20 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		fields.add("landingPageURL");
 		
 		HashMap<String, String> mappings = FieldMappings.getMappings();
-		String provider = seriesNode.getProperty(FieldMappings.getSystemFieldName("provider"));
+				
+		String path = seriesNode.getPath();
+		String[] splits = path.split("/");
+		String provider = splits[4];
+		
+		if(!this.countriesForProviders.containsKey(provider)){
+			FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
+			try{
+				String fullProviderString = providerNode.getProperty("birthdata");
+				this.countriesForProviders.put(provider, fullProviderString);
+			}catch(NullPointerException npe){
+				this.countriesForProviders.put(provider, seriesNode.getProperty(FieldMappings.getSystemFieldName("provider")));
+			}
+		}
 		
 		if(!this.countriesForProviders.containsKey(provider)){
 			FsNode providerNode = Fs.getNode("/domain/euscreenxl/user/" + provider + "/account/default");
