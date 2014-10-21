@@ -64,3 +64,6 @@ Episodelist.prototype.doStuffForSize = function(){
 		this.requestAll();
 	}
 };
+Episodelist.prototype.setDevice = function(data){
+	data = JSON.parse(data);
+};
