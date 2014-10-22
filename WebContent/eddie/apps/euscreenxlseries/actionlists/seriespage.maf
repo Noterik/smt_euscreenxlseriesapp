@@ -1,4 +1,10 @@
 setUrlTrigger(/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
+setUrlTrigger(euscreen.eu@/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
+setUrlTrigger(euscreenxl.eu@/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
+setUrlTrigger(www.euscreen.eu@/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
+setUrlTrigger(www.euscreenxl.eu@/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
+setUrlTrigger(beta.euscreenxl.eu@/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
+setUrlTrigger(beta.euscreen.eu@/lou/euscreen/series.html,/lou/domain/webtv/html5application/euscreenxlseries)
 loadStylesheet(screen,bootstrap)
 loadStylesheet(screen,fontawesome)
 loadStylesheet(screen,theme)
@@ -8,6 +14,7 @@ loadStylesheet(screen,terms)
 loadStylesheet(screen,specific)
 loadStylesheet(screen,additions_david)
 setRole(screen,"seriespage")
+loadContent(screen,analytics);
 loadContent(screen,history)
 loadContent(screen,template)
 loadContent(screen,header)
@@ -21,6 +28,7 @@ loadContent(screen,episodetitle)
 loadContent(screen,social)
 loadContent(screen,videocopyright)
 loadContent(screen,ads)
+loadContent(screen,linkinterceptor);
 
 .when device=iphone
 callServer(setDeviceMobile,screen)
@@ -35,3 +43,5 @@ callServer(init,screen)
 
 .when device=desktop
 callServer(doDesktopSpecificStuff,screen)
+
+loadContent(screen,analytics);

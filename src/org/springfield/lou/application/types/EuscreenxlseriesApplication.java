@@ -59,6 +59,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		this.addReferid("history", "/euscreenxlelements/history");
 		this.addReferid("viewer", "/euscreenxlelements/viewer");
 		this.addReferid("ads", "/euscreenxlelements/ads");
+		this.addReferid("analytics", "/euscreenxlelements/analytics");
 		
 		this.addReferidCSS("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -71,6 +72,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 	}
 	
 	public void init(Screen s){
+		System.out.println("EuscreenxlseriesApplication.init()");
 		//EXAMPLE SERIES ID: EUS_23670630327FACFCB5B6912617F95447
 		String seriesId = s.getParameter("id");
 		String uri = "/domain/euscreenxl/user/*/*";
@@ -107,7 +109,11 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			s.putMsg("social", "", "setSharingSettings(" + socialSettings + ")");
 		}
 		
-		
+		if(!this.inDevelMode()){
+			System.out.println("NOT IN DEVEL, DISABLE STUFF");
+			s.putMsg("linkinterceptor", "", "interceptLinks()");
+			s.putMsg("template", "", "hideBookmarking()");
+		}
 	}
 	
 	public void setDeviceMobile(Screen s){

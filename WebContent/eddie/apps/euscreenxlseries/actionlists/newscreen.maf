@@ -19,6 +19,7 @@ loadContent(screen,itempagelink)
 loadContent(screen,episodetitle)
 loadContent(screen,social)
 loadContent(screen,videocopyright)
+loadContent(screen,linkinterceptor);
 loadContent(screen,ads)
 
 .when device=iphone
@@ -34,3 +35,5 @@ callServer(init,screen)
 
 .when device=desktop
 callServer(doDesktopSpecificStuff,screen)
+
+loadContent(screen,analytics);

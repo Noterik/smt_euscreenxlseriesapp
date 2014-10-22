@@ -19,19 +19,30 @@ var Template = function () {
         var content = $this.attr("data-overlay");
         $this.click(function(e){
             e.preventDefault();
-            var element = this;
-            if($(content).is(":visible")) { 
-                $(content).hide(); $(element).removeClass('active');
-            } else { 
+            var element = $(this);
+                        
+            if(jQuery(content).is(":visible")){
+            	jQuery(content).hide();
+            	if(self.device == "ipad"){
+            	
+	            	overlayButtons.each(function(){
+	            		var el = this;
+	        		    var par = el.parentNode;
+	        		    var next = el.nextSibling;
+	        		    par.removeChild(el);
+	        		    setTimeout(function() {par.insertBefore(el, next);}, 0)
+	            	});
+            	}
+            	
+            }else{
             	jQuery(".overlaycontent").hide();
-                $(content).show(); $(element).addClass('active');
-                overlayButtons.not(element).removeClass('active');
+                $(content).show(); 
                 overlayContents.not($(content)).hide();
                 
                 if($(this).data('title') == "SHARE" && self.device == "desktop"){
-                	jQuery(".permalink input").focus();
+            		jQuery(".permalink input").focus();
+            		jQuery(".permalink input").select();
                 }
-                jQuery(".permalink input")[0].setSelectionRange(0, 9999);
             }
             
         });
@@ -48,4 +59,8 @@ Template.prototype.setDevice = function(data){
 Template.prototype.createTooltips = function(){
 	console.log("createTooltips()");
 	this.element.find('[data-toggle]').tooltip();
+};
+Template.prototype.hideBookmarking = function(){
+	console.log("Template.prototype.hideBookmarking()");
+	jQuery("li.bookmark").hide();
 }
