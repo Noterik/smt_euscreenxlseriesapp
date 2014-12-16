@@ -12,6 +12,9 @@ var Template = function () {
     var overlayButtons = this.overlayButtons;
 	var overlayContents = this.overlayContents;
 	
+	this.sortDescButton = this.element.find('a[data-title="SORT DESCENDING"]');
+	this.sortAscButton = this.element.find('a[data-title="SORT ASCENDING"]');
+	
 	var self = this;
 	
 	overlayButtons.each(function(){
@@ -47,6 +50,24 @@ var Template = function () {
             
         });
 	});
+	
+	this.sortDescButton.click(function(e){
+		e.preventDefault();
+		console.log("sortDescButton::CLICK");
+		self.sortDescButton.addClass('hide');
+		self.sortAscButton.removeClass('hide');
+		eddie.putLou("", "changeSorting(up)");
+	});
+	
+	this.sortAscButton.click(function(e){
+		e.preventDefault();
+		console.log("sortAscButton::CLICK");
+		self.sortAscButton.addClass('hide');
+		self.sortDescButton.removeClass('hide');
+		eddie.putLou("", "changeSorting(down)");
+	})
+	
+	
 };
 
 Template.prototype = Object.create(Page.prototype);

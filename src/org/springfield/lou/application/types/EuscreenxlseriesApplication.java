@@ -76,6 +76,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		//EXAMPLE SERIES ID: EUS_23670630327FACFCB5B6912617F95447
 		String seriesId = s.getParameter("id");
 		String uri = "/domain/euscreenxl/user/*/*";
+		s.setProperty("orderDirection", "up");
 		
 		JSONObject startupParameters = new JSONObject();
 		startupParameters.put("id", seriesId);
@@ -85,6 +86,8 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		if (nodes!=null && nodes.size()>0) {
 			FsNode seriesNode = (FsNode)nodes.get(0);
 			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");
+			
+			addOrderFieldEpisodes(videos);
 			
 			s.setProperty("seriesNode", seriesNode);
 			s.setProperty("seriesVideos", videos);
@@ -98,7 +101,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 				activeVideo = videos.getNodes().get(0);
 			}
 			
-			FsNode firstVideo = videos.getNodes().get(0);
+			FsNode firstVideo = this.getSortedEpisodes(s).get(0);
 			setActiveItem(s, activeVideo);
 			
 			getNextChunk(s);
@@ -113,6 +116,46 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			System.out.println("NOT IN DEVEL, DISABLE STUFF");
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 			s.putMsg("template", "", "hideBookmarking()");
+		}
+	}
+	
+	private void addOrderFieldEpisodes(FSList fslist) {
+		int basecounter = 1;
+		List<FsNode> nodes = fslist.getNodes();
+		for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+			// get the next node
+			FsNode n = (FsNode)iter.next();
+			int value = basecounter++;
+			int evalue = -1;
+			int svalue = -1;
+			try {
+				String tmp = n.getProperty("episodeNumber");
+				if (tmp!=null) {
+					tmp = tmp.replace("OC", "00");
+					System.out.println("EPI="+tmp);
+					evalue = Integer.parseInt(tmp);
+				}
+			} catch(Exception e) {}
+			try {
+				String tmp = n.getProperty("Series/season");
+				if (tmp!=null) {
+					System.out.println("SEA="+tmp);
+					svalue = Integer.parseInt(tmp);
+				}
+			} catch(Exception e) {}
+			
+			if (evalue!=-1) {
+				if (svalue!=-1) {
+					value = evalue*10000;
+					value += svalue*1000000;
+				} else {
+					value = evalue*10000;
+				}
+			} 
+			
+			String valueString = String.format("%010d", value);
+			System.out.println("N="+n.getId()+" V="+valueString);
+			n.setProperty("ordervalue", valueString);
 		}
 	}
 	
@@ -136,16 +179,21 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		System.out.println("doDesktopSpecificStuff()");
 		s.putMsg("template", "", "createTooltips()");
 	}
-	
+		
 	public String getFavicon() {
         return "/eddie/apps/euscreenxlelements/img/favicon.png";
     }
+	
+	public void setActiveItem(Screen s, int number){
+		
+	}
 	
 	public void setActiveItem(Screen s, String paramsJSON){
 		System.out.println("setActiveItem(" + paramsJSON + ")");
 		JSONObject params = (JSONObject) JSONValue.parse(paramsJSON);
 		String id = (String) params.get("id");
 		FSList videos = (FSList) s.getProperty("seriesVideos");
+		
 		List<FsNode> videoList = videos.getNodesById(id);		
 		FsNode node = videoList.get(0);
 		
@@ -179,6 +227,20 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		s.putMsg("episodelist", "", "handleChunk(" + chunkJSON + ")");
 	}
 	
+	public void changeSorting(Screen s, String direction){
+		s.setProperty("orderDirection", direction);
+		s.setProperty("chunk", 0);
+		s.putMsg("episodelist", "", "clear()");
+		this.getNextChunk(s);
+	}
+	
+	private List<FsNode> getSortedEpisodes(Screen s){
+		System.out.println("getSortedEpisodes()");
+		String direction = (String) s.getProperty("orderDirection");
+		System.out.println("DIRECTION: " + direction);
+		return ((FSList) s.getProperty("seriesVideos")).getNodesSorted("ordervalue", direction);
+	}
+	
 	private JSONArray getItems(Screen s){
 		List<FsNode> videos = ((FSList) s.getProperty("seriesVideos")).getNodes();
 		return getItems(s, 0, videos.size());
@@ -187,12 +249,11 @@ public class EuscreenxlseriesApplication extends Html5Application{
 	private JSONArray getItems(Screen s, int start, int stop){
 		JSONArray items = new JSONArray();
 		
-		List<FsNode> videos = ((FSList) s.getProperty("seriesVideos")).getNodes();
+		List<FsNode> videos = this.getSortedEpisodes(s);
 		
 		for(int i = start; i < stop; i++){
 			FsNode video = videos.get(i);
 			JSONObject videoJSON = new JSONObject();
-			
 			videoJSON.put("id", video.getId());
 			videoJSON.put("title", video.getProperty(FieldMappings.getSystemFieldName("title")));
 			videoJSON.put("screenshot", this.setEdnaMapping(video.getProperty(FieldMappings.getSystemFieldName("screenshot"))));

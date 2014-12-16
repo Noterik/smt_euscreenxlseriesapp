@@ -64,6 +64,9 @@ Episodelist.prototype.doStuffForSize = function(){
 		this.requestAll();
 	}
 };
+Episodelist.prototype.clear = function(){
+	this.listElement.html('');
+}
 Episodelist.prototype.setDevice = function(data){
 	data = JSON.parse(data);
 };
