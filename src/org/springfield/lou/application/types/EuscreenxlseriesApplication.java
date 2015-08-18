@@ -42,6 +42,9 @@ import org.springfield.fs.FSListManager;
 import org.springfield.fs.Fs;
 import org.springfield.fs.FsNode;
 import org.springfield.lou.application.Html5Application;
+import org.springfield.lou.euscreen.config.Config;
+import org.springfield.lou.euscreen.config.ConfigEnvironment;
+import org.springfield.lou.euscreen.config.SettingNotExistException;
 import org.springfield.lou.homer.LazyHomer;
 import org.springfield.lou.screen.Screen;
 
@@ -50,6 +53,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 	
 	private boolean wantedna = true;
 	private HashMap<String, String> countriesForProviders;
+	private Config config;
 	public String ipAddress="";
 	public static boolean isAndroid;
 	
@@ -71,6 +75,8 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		this.addReferid("viewer", "/euscreenxlelements/viewer");
 		this.addReferid("ads", "/euscreenxlelements/ads");
 		this.addReferid("analytics", "/euscreenxlelements/analytics");
+		this.addReferid("config", "/euscreenxlelements/config");
+		this.addReferid("urltransformer", "/euscreenxlelements/urltransformer");
 		
 		this.addReferidCSS("fontawesome", "/euscreenxlelements/fontawesome");
 		this.addReferidCSS("bootstrap", "/euscreenxlelements/bootstrap");
@@ -80,6 +86,15 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		this.addReferidCSS("terms", "/euscreenxlelements/terms");
 		
 		this.countriesForProviders = new HashMap<String, String>();
+		try {
+			if(this.inDevelMode()){
+				config = new Config(ConfigEnvironment.DEVEL);
+			}else{
+				config = new Config(ConfigEnvironment.PROD);
+			}
+		}catch(SettingNotExistException snee){
+			snee.printStackTrace();
+		}
 	}
 	
 	public void init(Screen s){
@@ -96,26 +111,31 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		List<FsNode> nodes = fslist.getNodesFiltered(seriesId.toLowerCase()); // find the item
 		if (nodes!=null && nodes.size()>0) {
 			FsNode seriesNode = (FsNode)nodes.get(0);
-			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");
-			
+			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");					
 			addOrderFieldEpisodes(videos);
+			
+			if(!this.inDevelMode()){
+				videos = filterPublicEpisodes(videos);
+			}
 			
 			s.setProperty("seriesNode", seriesNode);
 			s.setProperty("seriesVideos", videos);
 			setMetadata(s);
 			
-			String activeId = s.getParameter("activeItem");
-			FsNode activeVideo;
-			if(activeId != null){
-				activeVideo = videos.getNodesById(activeId).get(0);
-			}else{
-				activeVideo = videos.getNodes().get(0);
+			if(videos.size() > 0){
+				String activeId = s.getParameter("activeItem");
+				FsNode activeVideo;
+				if(activeId != null){
+					activeVideo = videos.getNodesById(activeId).get(0);
+				}else{
+					activeVideo = videos.getNodes().get(0);
+				}
+				
+				FsNode firstVideo = this.getSortedEpisodes(s).get(0);
+				setActiveItem(s, activeVideo);
+				
+				getNextChunk(s);
 			}
-			
-			FsNode firstVideo = this.getSortedEpisodes(s).get(0);
-			setActiveItem(s, activeVideo);
-			
-			getNextChunk(s);
 			
 			JSONObject socialSettings = new JSONObject();
 			socialSettings.put("text", seriesNode.getProperty(FieldMappings.getSystemFieldName("series")));
@@ -128,6 +148,23 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			s.putMsg("linkinterceptor", "", "interceptLinks()");
 			s.putMsg("template", "", "hideBookmarking()");
 		}
+		
+	}
+	
+	private FSList filterPublicEpisodes(FSList fslist) {
+		System.out.println("filterPublicEpisodes()");
+		FSList filteredList = new FSList();
+		List<FsNode> nodes = fslist.getNodes();
+		for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+			// get the next node
+			FsNode n = (FsNode)iter.next();
+			System.out.println("PUBLIC: " + n.getProperty("public"));
+			if(n.getProperty("public") != null && n.getProperty("public").equals("true")){
+				filteredList.addNode(n);
+			}
+		}
+		
+		return filteredList;
 	}
 	
 	private void addOrderFieldEpisodes(FSList fslist) {
