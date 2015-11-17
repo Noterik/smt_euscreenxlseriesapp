@@ -86,15 +86,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		this.addReferidCSS("terms", "/euscreenxlelements/terms");
 		
 		this.countriesForProviders = new HashMap<String, String>();
-		try {
-			if(this.inDevelMode()){
-				config = new Config(ConfigEnvironment.DEVEL);
-			}else{
-				config = new Config(ConfigEnvironment.PROD);
-			}
-		}catch(SettingNotExistException snee){
-			snee.printStackTrace();
-		}
+		
 	}
 	
 	public void init(Screen s){
@@ -140,6 +132,22 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			JSONObject socialSettings = new JSONObject();
 			socialSettings.put("text", seriesNode.getProperty(FieldMappings.getSystemFieldName("series")));
 			
+			try {
+				if(this.inDevelMode()){
+					config = new Config(ConfigEnvironment.DEVEL);
+				}else{
+					config = new Config(ConfigEnvironment.PROD);
+				}
+			}catch(SettingNotExistException snee){
+				snee.printStackTrace();
+			}
+			s.putMsg("urltransformer", "", "run()");
+			try {
+				s.putMsg("config", "", "update(" + this.config.getSettingsJSON() + ")");
+			} catch (SettingNotExistException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			s.putMsg("social", "", "setSharingSettings(" + socialSettings + ")");
 		}
 		
