@@ -8,9 +8,10 @@
                 <div class="media-wrapper">
                     <a class="modal-button" data-toggle="modal" data-target="#player-modal" data-backdrop="static">
                     	<span class="media-playing">NOW PLAYING</span>
-                        <img src="<% if(item.screenshot){print(item.screenshot + '?script=euscreen320t')}else{print('http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" class="media-object img-responsive" onError="this.onerror=null;this.src='http://player7.noterik.com/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif';"/>
+                        <img src="<% if(item.screenshot){print(item.screenshot + '?script=euscreen320t')}else{print('/eddie/apps/euscreenxlelements/img/ic_thumbnail.gif')} %>" class="media-object img-responsive" />
                         <span class="media-hue"><i class="glyphicon glyphicon-play fa fa-play"></i></span>
-                        <span class="media-title">
+                        <span class="media-logo <%= item.type %>"></span>
+						<span class="media-title">
                             <h3><%= item.title %></h3>
                         </span>
                     </a>

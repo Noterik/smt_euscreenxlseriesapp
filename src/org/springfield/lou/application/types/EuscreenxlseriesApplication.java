@@ -104,18 +104,22 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		if (nodes!=null && nodes.size()>0) {
 			FsNode seriesNode = (FsNode)nodes.get(0);
 			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");					
+			FSList audios = FSListManager.get(seriesNode.getPath() + "/audio");
 			addOrderFieldEpisodes(videos);
 			
 			if(!this.inDevelMode()){
 				videos = filterPublicEpisodes(videos);
+				audios = filterPublicEpisodes(audios);
 			}
 			
 			s.setProperty("seriesNode", seriesNode);
-			s.setProperty("seriesVideos", videos);
-			setMetadata(s);
-			
+
 			if(videos.size() > 0){
-				String activeId = s.getParameter("activeItem");
+			    	s.setProperty("seriesVideos", videos);
+			    	s.setProperty("seriesType", "video");
+			    	System.out.println("SeriesType = "+s.getProperty("seriesType"));
+
+			    	String activeId = s.getParameter("activeItem");
 				FsNode activeVideo;
 				if(activeId != null){
 					activeVideo = videos.getNodesById(activeId).get(0);
@@ -127,7 +131,26 @@ public class EuscreenxlseriesApplication extends Html5Application{
 				setActiveItem(s, activeVideo);
 				
 				getNextChunk(s);
+			} else if(audios.size() > 0){
+			    	s.setProperty("seriesVideos", audios);
+			    	s.setProperty("seriesType", "audio");
+			    	System.out.println("SeriesType = "+s.getProperty("seriesType"));
+			    	
+			    	String activeId = s.getParameter("activeItem");
+				FsNode activeVideo;
+				if(activeId != null){
+					activeVideo = audios.getNodesById(activeId).get(0);
+				}else{
+					activeVideo = audios.getNodes().get(0);
+				}
+				
+				FsNode firstVideo = this.getSortedEpisodes(s).get(0);
+				setActiveItem(s, activeVideo);
+				
+				getNextChunk(s);
 			}
+			
+			setMetadata(s);
 			
 			JSONObject socialSettings = new JSONObject();
 			socialSettings.put("text", seriesNode.getProperty(FieldMappings.getSystemFieldName("series")));
@@ -313,6 +336,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			videoJSON.put("id", video.getId());
 			videoJSON.put("title", video.getProperty(FieldMappings.getSystemFieldName("title")));
 			videoJSON.put("screenshot", this.setEdnaMapping(video.getProperty(FieldMappings.getSystemFieldName("screenshot"))));
+			videoJSON.put("type", s.getProperty("seriesType"));
 			items.add(videoJSON);
 		}
 		
@@ -500,7 +524,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			}
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("mime", mimeType);
-			objectToSend.put("audio", audio);;
+			objectToSend.put("src", audio);
 			s.putMsg("viewer", "", "setAudio(" + objectToSend + ")");
 		}else if(name.equals("picture")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawpicture/1");
