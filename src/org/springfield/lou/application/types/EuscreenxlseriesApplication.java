@@ -457,6 +457,9 @@ public class EuscreenxlseriesApplication extends Html5Application{
 				
 		String name = node.getName();
 		
+		String p = node.getPath();
+		String[] splits = p.split("/");
+		String provider = splits[4];
 						
 		if(name.equals("video")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawvideo/1");
@@ -479,14 +482,14 @@ public class EuscreenxlseriesApplication extends Html5Application{
 					Integer random= randomGenerator.nextInt(100000000);
 					String ticket = Integer.toString(random);
 
-					String videoFile= "/"+video+"/"+node.getPath()+ "/rawvideo/1/raw."+ extension;
+					String videoFile= "/" + video + node.getPath()+ "/rawvideo/1/raw."+ extension;
 					
 					try{						
 						//System.out.println("CallingSendTicket");						
 						sendTicket(videoFile,ipAddress,ticket);}
 					catch (Exception e){}
 					
-					video = "http://" + video + ".noterik.com/progressive/" + video + "/" + node.getPath() + "/rawvideo/1/raw."+ extension+"?ticket="+ticket;
+					video = "http://" + video + ".noterik.com/progressive/" + video + node.getPath() + "/rawvideo/1/raw."+ extension+"?ticket="+ticket;
 				} else if (video.indexOf(".noterik.com/progressive/") > -1) {
 					Random randomGenerator = new Random();
 					Integer random= randomGenerator.nextInt(100000000);
@@ -503,11 +506,26 @@ public class EuscreenxlseriesApplication extends Html5Application{
 
 				}
 				
+				FsNode maggieNode = Fs.getNode(node.getPath());
+				String duration = maggieNode.getProperty(FieldMappings.getSystemFieldName("duration"));
+				src.put("duration",""+timeToSeconds(duration));
+				src.put("maggieid", maggieNode.getPath());
+				
 				String mime = "video/mp4";
 				src.put("src", video);
 				src.put("mime", mime);
 				sourcesArray.add(src);
 			}
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("screenshot", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
+				JSONObject src = new JSONObject();
+				src.put("src", "");
+				src.put("mime", "");
+				objectToSend.put("sources", new JSONArray().add(src));
+			}		
+			
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
 		}else if(name.equals("audio")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawaudio/1");
@@ -525,6 +543,19 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("mime", mimeType);
 			objectToSend.put("src", audio);
+			objectToSend.put("provider", provider);
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("src", "");
+			}
+			
+			FsNode maggieNode = Fs.getNode(node.getPath());
+			String duration = maggieNode.getProperty(FieldMappings.getSystemFieldName("duration"));
+			System.out.println("DURATION="+timeToSeconds(duration));
+			objectToSend.put("duration",""+timeToSeconds(duration));
+			objectToSend.put("maggieid", maggieNode.getPath());
+			
 			s.putMsg("viewer", "", "setAudio(" + objectToSend + ")");
 		}else if(name.equals("picture")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawpicture/1");
@@ -548,6 +579,12 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("src", picture);
 			objectToSend.put("alt", node.getProperty(FieldMappings.getSystemFieldName("title")));
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
+			}
+			
 			s.putMsg("viewer", "", "setPicture(" + objectToSend + ")");
 		}else if(name.equals("doc")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawdoc/1");
@@ -558,6 +595,12 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			}
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("src", doc);
+			
+			//Workaround for KB that no longer wants their videos available on EUscreen
+			if (provider.equals("eu_kb")) {
+				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
+			}
+			
 			s.putMsg("viewer", "", "setDoc(" + objectToSend + ")");
 		}
 	}
@@ -667,5 +710,28 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			}
 		}
 		return request.getRemoteAddr();
+	}
+	
+	private int timeToSeconds(String time) {
+		String[] parts = time.split(":");
+		if (parts.length==3) {
+			try {
+				int sec = Integer.parseInt(parts[2]);
+				int min = Integer.parseInt(parts[1]);
+				int hour = Integer.parseInt(parts[0]);
+				return (sec+(min*60)+(hour*3600));
+			} catch(Exception e) {
+				return 3600; // default to a hour?
+			}
+		} else if (parts.length==2) {
+			try {
+				int sec = Integer.parseInt(parts[1]);
+				int min = Integer.parseInt(parts[0]);
+				return (sec+(min*60));
+			} catch(Exception e) {
+				return 3600; // default to a hour?
+			}
+		}
+		return 3600;
 	}
 }
