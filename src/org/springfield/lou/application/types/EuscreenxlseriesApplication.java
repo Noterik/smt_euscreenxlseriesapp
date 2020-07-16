@@ -105,11 +105,15 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			FsNode seriesNode = (FsNode)nodes.get(0);
 			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");					
 			FSList audios = FSListManager.get(seriesNode.getPath() + "/audio");
+			FSList pictures = FSListManager.get(seriesNode.getPath() + "/picture");
 			addOrderFieldEpisodes(videos);
+			addOrderFieldEpisodes(audios);
+			addOrderFieldEpisodes(pictures);
 			
 			if(!this.inDevelMode()){
 				videos = filterPublicEpisodes(videos);
 				audios = filterPublicEpisodes(audios);
+				pictures = filterPublicEpisodes(pictures);
 			}
 			
 			s.setProperty("seriesNode", seriesNode);
@@ -148,6 +152,23 @@ public class EuscreenxlseriesApplication extends Html5Application{
 				setActiveItem(s, activeVideo);
 				
 				getNextChunk(s);
+			} else if (pictures.size() > 0) {
+				s.setProperty("seriesVideos", pictures);
+		    	s.setProperty("seriesType", "picture");
+		    	System.out.println("SeriesType = "+s.getProperty("seriesType"));
+		    	
+		    	String activeId = s.getParameter("activeItem");
+		    	FsNode activeVideo;
+		    	if(activeId != null){
+		    		activeVideo = pictures.getNodesById(activeId).get(0);
+		    	}else{
+		    		activeVideo = pictures.getNodes().get(0);
+		    	}
+			
+		    	FsNode firstVideo = this.getSortedEpisodes(s).get(0);
+		    	setActiveItem(s, activeVideo);
+		    	
+		    	getNextChunk(s);
 			}
 			
 			setMetadata(s);
@@ -585,6 +606,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
 			}
 			
+			System.out.println("Setting picture "+objectToSend);
 			s.putMsg("viewer", "", "setPicture(" + objectToSend + ")");
 		}else if(name.equals("doc")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawdoc/1");

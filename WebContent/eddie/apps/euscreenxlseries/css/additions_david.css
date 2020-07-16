@@ -2,5 +2,6 @@
 	.media-item img{
 		width: 256px;
 		height: 193px;
+		object-fit: contain;
 	}
 }
