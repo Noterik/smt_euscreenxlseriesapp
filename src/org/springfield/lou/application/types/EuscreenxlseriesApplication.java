@@ -537,16 +537,7 @@ public class EuscreenxlseriesApplication extends Html5Application{
 				src.put("mime", mime);
 				sourcesArray.add(src);
 			}
-			
-			//Workaround for KB that no longer wants their videos available on EUscreen
-			if (provider.equals("eu_kb")) {
-				objectToSend.put("screenshot", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
-				JSONObject src = new JSONObject();
-				src.put("src", "");
-				src.put("mime", "");
-				objectToSend.put("sources", new JSONArray().add(src));
-			}		
-			
+
 			s.putMsg("viewer", "", "setVideo(" + objectToSend + ")");
 		}else if(name.equals("audio")){
 			FsNode rawNode = Fs.getNode(node.getPath() + "/rawaudio/1");
@@ -565,11 +556,6 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			objectToSend.put("mime", mimeType);
 			objectToSend.put("src", audio);
 			objectToSend.put("provider", provider);
-			
-			//Workaround for KB that no longer wants their videos available on EUscreen
-			if (provider.equals("eu_kb")) {
-				objectToSend.put("src", "");
-			}
 			
 			FsNode maggieNode = Fs.getNode(node.getPath());
 			String duration = maggieNode.getProperty(FieldMappings.getSystemFieldName("duration"));
@@ -601,11 +587,6 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			objectToSend.put("src", picture);
 			objectToSend.put("alt", node.getProperty(FieldMappings.getSystemFieldName("title")));
 			
-			//Workaround for KB that no longer wants their videos available on EUscreen
-			if (provider.equals("eu_kb")) {
-				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
-			}
-			
 			System.out.println("Setting picture "+objectToSend);
 			s.putMsg("viewer", "", "setPicture(" + objectToSend + ")");
 		}else if(name.equals("doc")){
@@ -617,11 +598,6 @@ public class EuscreenxlseriesApplication extends Html5Application{
 			}
 			JSONObject objectToSend = new JSONObject();
 			objectToSend.put("src", doc);
-			
-			//Workaround for KB that no longer wants their videos available on EUscreen
-			if (provider.equals("eu_kb")) {
-				objectToSend.put("src", "https://images3.noterik.com/domain/euscreenxl/user/eu_kb/euscreen-kb-takedown.png");
-			}
 			
 			s.putMsg("viewer", "", "setDoc(" + objectToSend + ")");
 		}
