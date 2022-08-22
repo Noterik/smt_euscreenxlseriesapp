@@ -32,7 +32,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -95,15 +95,28 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		String seriesId = s.getParameter("id");
 		String uri = "/domain/euscreenxl/user/*/*";
 		s.setProperty("orderDirection", "up");
+		System.out.println("seriesId = "+seriesId);
 		
 		JSONObject startupParameters = new JSONObject();
 		startupParameters.put("id", seriesId);
 		s.putMsg("history", "", "setStartupParameters(" + startupParameters + ")");
 		FSList fslist = FSListManager.get(uri);
 		List<FsNode> nodes = fslist.getNodesFiltered(seriesId.toLowerCase()); // find the item
-		if (nodes!=null && nodes.size()>0) {
-			FsNode seriesNode = (FsNode)nodes.get(0);
-			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");					
+		
+		FsNode seriesNode = null;
+		
+		//find the series node
+		for(Iterator<FsNode> iter = nodes.iterator() ; iter.hasNext(); ) {
+			FsNode n = (FsNode)iter.next();	
+			System.out.println("node path "+n.getPath());
+			if (n.getPath().contains("/series/")) {
+				seriesNode = n;
+				break;
+			}
+		}
+		
+		if (seriesNode != null) {
+			FSList videos = FSListManager.get(seriesNode.getPath() + "/video");	
 			FSList audios = FSListManager.get(seriesNode.getPath() + "/audio");
 			FSList pictures = FSListManager.get(seriesNode.getPath() + "/picture");
 			addOrderFieldEpisodes(videos);
