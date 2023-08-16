@@ -4,21 +4,24 @@
 * This file contains the generic styles for the item page. These styles should be applied on all devices,
 * but might be overwritten in specific cases for certain devices.
 */
+.page.series {
+	margin-top: 20px;
+}
 .series .main .row .left .episode-header {
   background: #fff;
-  border-bottom: 5px solid #00aeef;
+  padding-bottom: 10px;
 }
 .series .main .row .left .episode-header [class*='col-'] {
   padding-left: 0px;
 }
 .series .main .row .left .episode-header [class*='col-'] .tab {
-  background: #00aeef;
-  color: #fff;
+  color: #000;
   display: inline-block;
   height: 60px;
-  padding: 20px 10px 0 10px;
-  font-size: 1.071em;
-  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  padding: 20px 10px 0 0;
+  font-size: 20px;
+  font-family: 'D-DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  font-weight: 500;
 }
 .series .main .row .left .episode-header [class*='col-'] .tab .episode-counter {
   background: #fff;
@@ -36,7 +39,7 @@
   margin-top: 6px;
 }
 .series .main .row .left .episode-action [class*='col-'] {
-  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  font-family: 'D-DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
   padding-right: 0px;
   padding-left: 0px;
   position: relative;
@@ -60,20 +63,19 @@
 }
 .series .main .row .left .episode-action [class*='col-'] ul li .tooltip {
   z-index: 1031 !important;
-  font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;
+  font-family: 'D-DIN', Helvetica, Arial, sans-serif;
 }
 .series .main .row .left .episode-action [class*='col-'] ul li.episodes-sort a,
 .series .main .row .left .episode-action [class*='col-'] ul li.episode-link a {
-  border-left: 1px solid #f2f2f2;
   display: block;
   height: 61px;
   width: 60px;
   font-size: 1.3em;
   text-align: center;
-  border-bottom: 1px solid #f2f2f2;
   padding-top: 17px;
   -webkit-transition: all 0.35s;
   transition: all 0.35s;
+  color: #4CC5F3;
 }
 .series .main .row .left .episode-action [class*='col-'] ul li.episodes-sort a:hover,
 .series .main .row .left .episode-action [class*='col-'] ul li.episode-link a:hover {
@@ -86,11 +88,11 @@
   margin-right: -4px;
 }
 .series .main .row .left .episode-action [class*='col-'] .episode-title {
-  font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;
-  font-size: 1.14em;
-  padding: 15px 20px 19px 20px;
-  line-height: 1.6em;
+  font-family: 'D-DIN', Helvetica, Arial, sans-serif;
+  font-size: 24px;
   width: 80%;
+  margin-top: 6px;
+  color: #0e0e0e;
 }
 .series .main .row .left .episode-list {
   margin-top: 6px;
@@ -130,14 +132,26 @@
 .series .main .row .left .episode-list .media-item .media-image .media-wrapper a .media-title h3 {
   font-size: 0.922em;
 }
+.series .main .row .left .more a {
+  padding: 10px 40px;
+  background-color: #4CC5F3;
+  font-size: 20px;
+  border-radius: 4px;
+  box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.18);
+  font-weight: 500;
+  color: #ffffff;
+}
 .series .main .row .right {
   border-left: 6px solid #f2f2f2;
   border-right: 6px solid #f2f2f2;
 }
 .series .main .row .right .series-header {
   background: #fff;
-  border-bottom: 5px solid #00aeef;
   margin-top: 6px;
+  padding-bottom: 10px;
+}
+.series .main .row .right .series-header .nav-tabs {
+	border: 0;
 }
 .series .main .row .right .series-header [class*='col-'] {
   padding-left: 0px;
@@ -152,28 +166,45 @@
   clear: both;
 }
 .series .main .row .right .series-header [class*='col-'] .nav li {
-  background: #00aeef;
-  color: #fff;
-  font-family: 'Titillium Web', 'DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  color: #000;
   height: 60px;
   padding: 20px 20px 0 20px;
-  font-size: 1.071em;
+  font-size: 20px;
+  font-family: 'D-DIN', "Helvetica Neue", Monaco, "Andale Mono", Consolas, monospace;
+  font-weight: 500;
 }
 .series .main .row .right .series-header [class*='col-'] .media-action ul li {
   border-bottom: 0px;
+  padding-top: 20px;
+}
+.series .main .row .right .series-header [class*='col-'] .media-action ul li button {
+	border-radius: 20px;
+	padding: 6px 16px;
+	width: auto;
+}
+.series .main .row .right .series-header [class*='col-'] .media-action .share-copy {
+	position: absolute;
+	right: 0px;
+	z-index: 3;
+	color: #f14cae;
+	font-size: 12px;
+	padding: 11px;
+	cursor: pointer;
 }
 .series .main .row .right .series-header [class*='col-'] .media-action ul li .overlaycontent {
   width: 262px;
 }
 .series .main .row .right .series-metadata,
 .series .main .row .right .extra-info {
-  background: #fff;
   margin-top: 6px;
+  background: #f2f2f2;
+  border-radius: 12px;
+  margin-left: 5px;
 }
 .series .main .row .right .series-metadata [class*='col-'] h1,
 .series .main .row .right .extra-info [class*='col-'] h1 {
   font-size: 1.286em;
-  font-family: 'Proxima Nova', Helvetica, Arial, sans-serif;
+  font-family: 'D-DIN', Helvetica, Arial, sans-serif;
   line-height: 1.4em;
   margin-bottom: 15px;
 }
@@ -197,6 +228,15 @@
 }
 .series .main .row .right .more {
   margin-top: 1px;
+}
+.series .main .row .right .more a {
+  padding: 10px 40px;
+  background-color: #4CC5F3;
+  font-size: 20px;
+  border-radius: 4px;
+  box-shadow: 0px 1px 8px 1px rgba(0, 0, 0, 0.18);
+  font-weight: 500;
+  color: #ffffff;
 }
 .series .main .row .right .more .more-button #hide-extra-metadata {
   display: none;

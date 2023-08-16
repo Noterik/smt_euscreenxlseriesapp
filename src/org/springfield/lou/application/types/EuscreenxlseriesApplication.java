@@ -66,8 +66,6 @@ public class EuscreenxlseriesApplication extends Html5Application{
 		
 		//Add refers to other resources
 		this.addReferid("mobilenav", "/euscreenxlelements/mobilenav");
-		this.addReferid("header", "/euscreenxlelements/header");
-		this.addReferid("footer", "/euscreenxlelements/footer");
 		this.addReferid("linkinterceptor", "/euscreenxlelements/linkinterceptor");
 		this.addReferid("warning", "/euscreenxlelements/warning");
 		this.addReferid("videocopyright", "/euscreenxlelements/videocopyright");
